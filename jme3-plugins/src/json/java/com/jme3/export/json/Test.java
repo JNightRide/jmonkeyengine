@@ -60,6 +60,11 @@ import java.util.logging.Logger;
  */
 public class Test extends SimpleApplication {
     
+    private static final String HOME_PATH;
+    static {
+        HOME_PATH = System.getProperty("user.home");
+    }
+    
     public static void main(String[] args) {
         Test app = new Test();
         app.start();
@@ -67,6 +72,8 @@ public class Test extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
+        getFlyByCamera().setEnabled(false);
+
         Box b = new Box(1, 1, 1);
         Geometry geom = new Geometry("Box", b);
 
@@ -82,12 +89,12 @@ public class Test extends SimpleApplication {
         
         exporter(geom);
         
-        geom.move(-3, 0, 0);
+        geom.move(-2, 0, 0);
         rootNode.attachChild(geom);
         
         
         try {
-            Geometry imGeom = importer(new FileInputStream("/home/wil/Documentos/JSON_EXPORTER_JME/cube.eg3.json"));
+            Geometry imGeom = importer(new FileInputStream(HOME_PATH + "/cube.jmo.json"));
             imGeom.move(2, 0, 0);
             
             rootNode.attachChild(imGeom);
@@ -98,8 +105,12 @@ public class Test extends SimpleApplication {
     
     private void exporter(Savable savable) {
         try {
+            File file = new File(HOME_PATH + "/cube.jmo.json");
+            
             JsonExporter exporter = JsonExporter.getInstance();
-            exporter.save(savable, new File("/home/wil/Documentos/JSON_EXPORTER_JME/cube.eg3.json"));
+            exporter.save(savable, file);
+            
+            System.out.println("[ OUT ] :Dir >> " + file.getAbsolutePath());
         } catch (IOException e) {
             throw new RuntimeException("[ ERR ] :Importer", e);
         }
