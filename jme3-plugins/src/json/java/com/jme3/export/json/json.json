@@ -1,0 +1,28 @@
+{
+    "metadata": {
+        "autor": "wil",
+        "engine": "jMonkeyEngine3"
+    },
+    "root": {
+        "jme-byteval": 1,
+        "jme-bytearray": [1, 2, 3, 4, 5, 5, 5],
+        "jme-bytearray2D": [
+            [1, 1, 1, 1, 0, 0, 0, 0],
+            [0, 1, 0, 1, 0, 1, 0, 1]
+        ],
+        
+        "jme.objeto": {
+            
+        },
+        "List3D": [
+            {
+                "+/Map.Key": {
+                    
+                },
+                "value": {
+                    
+                }
+            }
+        ]
+    }
+}
