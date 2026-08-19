@@ -369,7 +369,6 @@ public class SdlMouseInput implements MouseInput {
 
     @Override
     public void setCursorVisible(boolean visible) {
-        boolean wasVisible = cursorVisible;
         cursorVisible = visible;
         if (!context.isRenderable()) {
             return;
@@ -381,9 +380,6 @@ public class SdlMouseInput implements MouseInput {
             SDL_CaptureMouse(false);
             SDL_SetWindowMouseGrab(context.getWindowHandle(), false);
             SDL_SetWindowRelativeMouseMode(context.getWindowHandle(), false);
-            if (!wasVisible) {
-                centerVisibleCursor();
-            }
             SDL_ShowCursor();
         } else {
             SDL_SetWindowMouseGrab(context.getWindowHandle(), true);
@@ -392,15 +388,12 @@ public class SdlMouseInput implements MouseInput {
                 x11WarpGrabMode = true;
                 ignoreNextX11WarpEvent = true;
                 SDL_SetWindowRelativeMouseMode(context.getWindowHandle(), false);
-                warpMouseToWindowCenter();
-                syncMouseToWindowCenter();
             } else {
                 x11WarpGrabMode = false;
                 SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_MODE_CENTER, "1");
                 SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_CURSOR_VISIBLE, "0");
                 SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_WARP_MOTION, "0");
                 SDL_SetWindowRelativeMouseMode(context.getWindowHandle(), true);
-                warpMouseToWindowCenter();
             }
             SDL_HideCursor();
         }
@@ -413,17 +406,6 @@ public class SdlMouseInput implements MouseInput {
     private void warpMouseToWindowCenter() {
         refreshWindowMetrics();
         SDL_WarpMouseInWindow(context.getWindowHandle(), windowCoordWidth * 0.5f, windowCoordHeight * 0.5f);
-    }
-
-    private void centerVisibleCursor() {
-        warpMouseToWindowCenter();
-        syncMouseToWindowCenter();
-    }
-
-    private void syncMouseToWindowCenter() {
-        refreshWindowMetrics();
-        mouseX = currentWidth / 2;
-        mouseY = currentHeight / 2;
     }
 
     private boolean isNearWindowCenter(float x, float y) {
